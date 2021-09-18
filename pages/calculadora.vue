@@ -1,21 +1,43 @@
 <template>
-  <v-row class="d-flex flex-column justify-space-between" align="center">
-    <v-col justify="center" align="center" cols="12" sm="8" md="6">
+  <v-row>
+    <v-col
+      justify="center"
+      align="center"
+      cols="5"
+    >
       <v-card class="mt-12 d-flex flex-column align-center justify-center">
-        <v-card-title>
-          Insira os Dados
-        </v-card-title>
+        <div class="my-3">
+          <p>
+            Insira os Dados
+          </p>
+          <v-text-field
+            v-model="dataBase"
+            label="Data Base"
+            type="date"
+            outlined
+          />
+        </div>
 
-        <v-text-field
-          label="Data Base"
-          type="date"
-          outlined
-        />
-        <v-select
-          :items="progressoes"
-          label="Tipo de progressão"
-          outlined
-        />
+        <div>
+          <p>
+            Insira a pena
+          </p>
+          <div class="d-flex px-10">
+            <div
+              v-for="(item, idx) in itensPena"
+              :key="idx"
+              class="px-2"
+            >
+              <v-text-field
+                v-model="item.valor"
+                :label="item.nome"
+                outlined
+              />
+              {{ item.valor }}
+            </div>
+            {{ penaData }}
+          </div>
+        </div>
 
         <v-btn
           color="black--text success mb-12"
@@ -25,43 +47,58 @@
         >
           Calcular
         </v-btn>
-
-        <p
-          class="mb-12"
-          v-if="calculado"
-        >
-          <b>
-            Sai daqui uns dias!!!!
-          </b>
-        </p>
       </v-card>
     </v-col>
 
-    <v-footer
-      class="d-flex justify-center pa-8"
-      fixed
+    <v-col
+      cols="7"
     >
-      <v-btn
-        color="primary"
-        large
-        to="/"
-      >
-        Voltar
-      </v-btn>
-    </v-footer>
+      <v-card class="mt-12 d-flex flex-column align-center justify-center">
+        <v-card-title>
+          Resultado
+        </v-card-title>
+
+        {{ resultadoData }}
+
+        <v-text-field
+          v-model="resultado"
+          label="Resultado"
+          type="tel"
+          outlined
+        />
+      </v-card>
+    </v-col>
+
+    <BotaoVoltar/>
   </v-row>
 </template>
 
 <script>
+import BotaoVoltar from '~/components/BotaoVoltar.vue';
+
 export default {
+  components: {
+    BotaoVoltar
+  },
   data() {
     return {
+      dataBase: '',
       calculado: false,
-      progressoes: [
-        "1/3",
-        "1/6",
-        "1/10"
-      ]
+      itensPena: [
+        { nome: 'ano', valor: null },
+        { nome: 'mes', valor: null },
+        { nome: 'dia', valor: null },
+      ],
+      resultado: null,
+    }
+  },
+  computed: {
+    resultadoData() {
+      return new Date(`${this.dataBase} 00:00:00`);
+    },
+    penaData() {
+      let pena = `${this.itensPena[0].valor}-${this.itensPena[1].valor}-${this.itensPena[2].valor} 00:00:00`;
+      return console.log(new Date(pena))
     }
   },
   methods: {
