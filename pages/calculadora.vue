@@ -1,76 +1,37 @@
 <template>
-  <v-row>
-    <v-col
-      justify="center"
-      align="center"
-      cols="5"
-    >
-      <v-card class="mt-12 d-flex flex-column align-center justify-center">
-        <div class="my-3">
-          <p>
-            Insira os Dados
-          </p>
-          <v-text-field
-            v-model="dataBase"
-            label="Data Base"
-            type="date"
-            outlined
-          />
-        </div>
+  <v-row
+    :class="
+      $vuetify.breakpoint.smAndDown ? 'd-flex flex-column' : ''
+    "
+  >
+    <CampoDados
+      v-model="itensPena"
+    />
 
-        <div>
-          <p>
-            Insira a pena
-          </p>
-          <div class="d-flex px-10">
-            <div
-              v-for="(item, idx) in itensPena"
-              :key="idx"
-              class="px-2"
-            >
-              <v-text-field
-                v-model="item.valor"
-                :label="item.nome"
-                outlined
-              />
-            </div>
-          </div>
-        </div>
-      </v-card>
-    </v-col>
-
-    <v-col
-      cols="7"
-    >
-      <v-card class="mt-12 d-flex flex-column align-center justify-center">
-        <v-card-title>
-          Resultado
-        </v-card-title>
-
-        <div class="mb-4">
-          <h3>
-            Final da pena: <span v-if="penaData != 'Invalid Date'">{{ dataFormatada }}</span>
-          </h3>
-        </div>
-      </v-card>
-    </v-col>
+    <CampoRespostas
+      :penaData="penaData"
+      :dataFormatada="dataFormatada"
+    />
 
     <BotaoVoltar/>
   </v-row>
 </template>
 
 <script>
+import CampoDados from '~/components/calculadora/CampoDados.vue';
+import CampoRespostas from '~/components/calculadora/CampoRespostas.vue';
 import BotaoVoltar from '~/components/BotaoVoltar.vue';
 
 export default {
   components: {
-    BotaoVoltar
+    CampoDados,
+    CampoRespostas,
+    BotaoVoltar,
   },
   data() {
     return {
-      dataBase: '',
-      calculado: false,
       itensPena: [
+        { nome: 'Data-base', valor: '' },
         { nome: 'Anos', valor: null },
         { nome: 'Meses', valor: null },
         { nome: 'Dias', valor: null },
@@ -79,14 +40,14 @@ export default {
   },
   computed: {
     dataBaseData() {
-      let dataNormal = new Date(`${this.dataBase} 00:00:00`);
+      let dataNormal = new Date(`${this.itensPena[0].valor} 00:00:00`);
       return dataNormal.getTime();//retorna data em milisegundos
     },
     penaData() {
       let diaMiliAux = 1000*60*60*24;
-      let anosMili = diaMiliAux*365*this.itensPena[0].valor;
-      let mesesMili = diaMiliAux*30*this.itensPena[1].valor;
-      let diasMili = diaMiliAux*this.itensPena[2].valor;
+      let anosMili = diaMiliAux*365*this.itensPena[1].valor;
+      let mesesMili = diaMiliAux*30*this.itensPena[2].valor;
+      let diasMili = diaMiliAux*this.itensPena[3].valor;
 
       let fimPena = new Date(this.dataBaseData+anosMili+mesesMili+diasMili);
       return fimPena;

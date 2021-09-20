@@ -19,7 +19,10 @@
       </template>
 
       <v-app-bar-title>
-        <h1>
+        <h2 v-if="$vuetify.breakpoint.smAndDown">
+          Calculadora Penal
+        </h2>
+        <h1 v-else>
           Calculadora Penal
         </h1>
       </v-app-bar-title>
