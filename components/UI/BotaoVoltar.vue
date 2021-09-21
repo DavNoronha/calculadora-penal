@@ -1,7 +1,11 @@
 <template>
     <v-footer
-      class="d-flex justify-center pa-8"
-      fixed
+      app
+      :class="
+        $vuetify.breakpoint.smAndDown
+          ? 'd-flex justify-center pa-3'
+          : 'd-flex justify-center pa-8'
+      "
     >
       <v-btn
         color="primary"

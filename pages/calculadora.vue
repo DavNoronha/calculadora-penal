@@ -9,8 +9,9 @@
     />
 
     <CampoRespostas
+      :dataBase="dataBaseData"
+      :pena="pena"
       :penaData="penaData"
-      :dataFormatada="dataFormatada"
     />
 
     <BotaoVoltar/>
@@ -20,7 +21,7 @@
 <script>
 import CampoDados from '~/components/calculadora/CampoDados.vue';
 import CampoRespostas from '~/components/calculadora/CampoRespostas.vue';
-import BotaoVoltar from '~/components/BotaoVoltar.vue';
+import BotaoVoltar from '~/components/UI/BotaoVoltar.vue';
 
 export default {
   components: {
@@ -36,28 +37,24 @@ export default {
         { nome: 'Meses', valor: null },
         { nome: 'Dias', valor: null },
       ],
+      pena: null
     }
   },
   computed: {
-    dataBaseData() {
+    dataBaseData() {//transforma String 'dataBase' em Date
       let dataNormal = new Date(`${this.itensPena[0].valor} 00:00:00`);
       return dataNormal.getTime();//retorna data em milisegundos
     },
-    penaData() {
+    penaData() {//soma a pena e a dataBase
       let diaMiliAux = 1000*60*60*24;
       let anosMili = diaMiliAux*365*this.itensPena[1].valor;
       let mesesMili = diaMiliAux*30*this.itensPena[2].valor;
       let diasMili = diaMiliAux*this.itensPena[3].valor;
 
-      let fimPena = new Date(this.dataBaseData+anosMili+mesesMili+diasMili);
+      this.pena = anosMili+mesesMili+diasMili;
+      let fimPena = new Date(this.dataBaseData+this.pena);
       return fimPena;
     },
-    dataFormatada() {
-      let formatada =
-        `${this.penaData.getDate()}/${this.penaData.getMonth()+1}/${this.penaData.getFullYear()}`
-
-      return formatada;
-    }
   },
 }
 </script>
