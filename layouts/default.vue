@@ -19,14 +19,14 @@
       </template>
 
       <v-app-bar-title>
-        <h1>
+        <h2>
           Calculadora Penal
-        </h1>
+        </h2>
       </v-app-bar-title>
 
     </v-app-bar>
     <v-main app>
-      <v-container>
+      <v-container fluid>
         <Nuxt />
       </v-container>
     </v-main>
@@ -35,8 +35,9 @@
 
 <script>
 export default {
-  data () {
-    return {
+  computed: {
+    isMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
     }
   }
 }
