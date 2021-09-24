@@ -44,7 +44,8 @@
         <v-card-text :class="['black--text', isMobile ? 'text-subtitle-1' : 'text-h5']">
           <span>
             Este site é uma ferramenta para o advogado moderno, idealizado pela Dra. Cínthia Passos.
-            Aproveite! Qualquer dúvida ou sugestão, procure-me no Instagram: @david.noronha
+            Aproveite! Qualquer dúvida ou sugestão, procure-me no Instagram:
+              <a href="https://www.instagram.com/david.noronha/">@david.noronha</a>
           </span>
         </v-card-text>
       </v-card>

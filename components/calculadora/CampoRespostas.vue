@@ -6,8 +6,8 @@
       </v-card-title>
 
       <v-row justify="center">
-        <v-col cols="6">
-          <v-card :color="backgroundCard[2]" class="pa-1">
+        <v-col cols="8">
+          <v-card :color="backgroundCard[2]" class="pa-1 text-center">
             <p class="text-h6">
               Final da pena:
               <span class="text-h4" v-if="penaData != 'Invalid Date'">
