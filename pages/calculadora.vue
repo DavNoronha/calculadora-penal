@@ -1,23 +1,28 @@
 <template>
   <v-row
     :class="
-      isMobile ? 'd-flex flex-column' : ''
+      isMobile
+        ? 'd-flex flex-column'
+        : 'd-flex justify-center'
     "
   >
-    <CampoDados
-      v-model="itensPena"
-      :isMobile="isMobile"
-      :base="dataBase"
-      @data="dataBase = $event"
-    />
+    <v-col :cols="isMobile ? 12 : 8">
+      <v-row>
+        <CampoDados
+          v-model="itensPena"
+          :base="dataBase"
+          @data="dataBase = $event"
+          :isMobile="isMobile"
+        />
 
-    <CampoRespostas
-      :dataBase="dataBaseData"
-      :pena="pena"
-      :penaData="penaData"
-      :isMobile="isMobile"
-    />
-
+        <CampoRespostas
+          :dataBase="dataBaseData"
+          :pena="pena"
+          :penaData="penaData"
+          :isMobile="isMobile"
+        />
+      </v-row>
+    </v-col>
     <BotaoVoltar/>
   </v-row>
 </template>
