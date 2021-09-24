@@ -1,7 +1,7 @@
 <template>
   <v-row
     :class="
-      $vuetify.breakpoint.smAndDown ? 'd-flex flex-column' : ''
+      $vuetify.breakpoint.smAndDown ? 'd-flex flex-column' : 'mt-2'
     "
   >
     <CampoDados

@@ -4,8 +4,9 @@
       :class="
         $vuetify.breakpoint.smAndDown
           ? 'mt-0 d-flex flex-column align-center justify-center'
-          : 'mt-12 d-flex flex-column align-center justify-center'
+          : 'd-flex flex-column align-center justify-center'
       "
+      height="100%"
     >
       <v-card-title>
         Resultado
@@ -50,9 +51,9 @@ export default {
   data() {
     return {
       progressoes: [
-        { fracao: 1/10, nome: '1/10', valor: '' },
         { fracao: 1/6, nome: '1/6', valor: '' },
-        { fracao: 1/2, nome: '1/2', valor: '' },
+        { fracao: 2/5, nome: '2/5', valor: '' },
+        { fracao: 3/5, nome: '3/5', valor: '' },
       ]
     }
   },

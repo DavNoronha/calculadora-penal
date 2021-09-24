@@ -8,7 +8,7 @@
       :class="
         $vuetify.breakpoint.smAndDown
           ? 'mt-0 d-flex flex-column align-center justify-center'
-          : 'mt-12 d-flex flex-column align-center justify-center'
+          : 'd-flex flex-column align-center justify-center'
       "
     >
       <div class="my-3">
