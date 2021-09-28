@@ -1,25 +1,27 @@
 <template>
   <v-row
     :class="
-      isMobile
-        ? 'd-flex flex-column'
+      mobile
+        ? 'd-flex flex-column align-center'
         : 'd-flex justify-center'
     "
   >
-    <v-col :cols="isMobile ? 12 : 8">
+    <v-col :cols="colPai">
       <v-row>
         <CampoDados
           v-model="itensPena"
           :base="dataBase"
           @data="dataBase = $event"
-          :isMobile="isMobile"
+          :remicao="remicao"
+          @diasRemicao="remicao = $event"
+          :verificaData="dataInvalida"
         />
 
         <CampoRespostas
           :dataBase="dataBaseData"
           :pena="pena"
           :penaData="penaData"
-          :isMobile="isMobile"
+          :remicao="remicaoMili"
         />
       </v-row>
     </v-col>
@@ -47,14 +49,13 @@ export default {
         { nome: 'Dias', valor: null },
       ],
       pena: null,
+      remicao: null
     }
   },
   computed: {
-    isMobile() {
-      return this.$vuetify.breakpoint.smAndDown
-    },
     dataBaseData() {//transforma String 'dataBase' em Date
-      let dataNormal = new Date(`${this.dataBase} 00:00:00`);
+      let dataConvertida = this.dataBase.split('/').reverse().join('-');
+      let dataNormal = new Date(`${dataConvertida} 00:00:00`);
       return dataNormal.getTime();//retorna data em milisegundos
     },
     penaData() {//soma a pena e a dataBase
@@ -67,6 +68,18 @@ export default {
       let fimPena = new Date(this.dataBaseData+this.pena);
       return fimPena;
     },
+    remicaoMili() {
+      let diaMiliAux = 1000*60*60*24;
+      return +this.remicao * diaMiliAux;
+    },
+    dataInvalida() {
+      if(this.dataBase != '' && this.penaData == 'Invalid Date') {
+        return {
+          invalida: true,
+          text: 'Data invalida, tente novamente!'
+        }
+      }
+    }
   },
 }
 </script>

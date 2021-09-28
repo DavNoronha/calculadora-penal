@@ -1,17 +1,17 @@
 <template>
-  <v-col :cols="isMobile ? 12 : 7">
+  <v-col :cols="mobile ? 12 : 7">
     <v-card height="100%" class="pa-3">
       <v-card-title color="#651FFF" class="d-flex justify-center">
         Resultado
       </v-card-title>
 
       <v-row justify="center">
-        <v-col cols="8">
+        <v-col :cols="mobile ? 12 : 8">
           <v-card :color="backgroundCard[2]" class="pa-1 text-center">
             <p class="text-h6">
-              Final da pena:
+              Fim da pena:
               <span class="text-h4" v-if="penaData != 'Invalid Date'">
-                {{ dataFormatada(penaData) }}
+                {{ fimDaPena }}
               </span>
             </p>
           </v-card>
@@ -19,14 +19,15 @@
       </v-row>
 
       <v-row align="center" class="d-flex flex-column pb-3">
-        <v-col :cols="isMobile ? 10 : 8">
+        <v-col :cols="mobile ? 12 : 8">
           <v-card :color="backgroundCard[0]" class="pa-3">
             <p class="text-h6">Frações</p>
             <v-row>
               <v-col
                 v-for="(item, idx) in progressoes.fracoes"
                 :key="idx"
-                :cols="isMobile ? 6 : 4"
+                :cols="mobile ? 6 : 4"
+                class="pa-2"
               >
                 <p class="text-subtitle-2">
                   {{ item.nome }} da pena:
@@ -39,14 +40,15 @@
           </v-card>
         </v-col>
 
-        <v-col :cols="isMobile ? 10 : 8">
+        <v-col :cols="mobile ? 12 : 8">
           <v-card :color="backgroundCard[1]" class="pa-3">
             <p class="text-h6">Porcentagens</p>
             <v-row>
               <v-col
                 v-for="(item, idx) in progressoes.porcentagens"
                 :key="idx"
-                :cols="isMobile ? 6 : 4"
+                :cols="mobile ? 6 : 4"
+                class="pa-2"
               >
                 <p class="text-subtitle-2">
                   {{ item.nome }} da pena:
@@ -78,9 +80,9 @@ export default {
       type: Date,
       default: {}
     },
-    isMobile: {
-      type: Boolean,
-      default: true
+    remicao: {
+      type: Number,
+      default: null
     }
   },
   data() {
@@ -105,11 +107,15 @@ export default {
     }
   },
   computed: {
-    fracoes() {//calculo pode estar funcionando
+    fimDaPena() {
+      let fim = this.penaData.getTime() - this.remicao;
+      return this.dataFormatada(new Date(fim));
+    },
+    fracoes() {//calculo das frações para progressão de regime
       if(this.pena) {
         let dataprogressao = [];
         this.progressoes.fracoes.forEach(item => {
-          item.valor = this.dataBase + (this.pena * item.fracao);
+          item.valor = this.dataBase + (this.pena * item.fracao) - this.remicao;
           dataprogressao.push(
             this.dataFormatada(new Date(item.valor))
           );
@@ -118,15 +124,15 @@ export default {
       }
       return ['Aguardando...', 'Aguardando...', 'Aguardando...'];
     },
-    porcentagens() {//calculo pode estar funcionando
+    porcentagens() {//calculo das porcentagens para progressão de regime
       if(this.pena) {
         let dataprogressao = [];
         this.progressoes.porcentagens.forEach(item => {
-          item.valor = this.dataBase + (this.pena * item.porcentagem);
+          item.valor = this.dataBase + (this.pena * item.porcentagem) - this.remicao;
           dataprogressao.push(
             this.dataFormatada(new Date(item.valor))
           );
-        })
+        });
         return dataprogressao;
       }
       return ['Aguardando...', 'Aguardando...', 'Aguardando...', 'Aguardando...', 'Aguardando...', 'Aguardando...', 'Aguardando...'];
@@ -134,8 +140,7 @@ export default {
   },
   methods: {
     dataFormatada(data) {//formata data somada
-      let formatada = `${data.getDate()}/${data.getMonth()+1}/${data.getFullYear()}`
-      return formatada;
+      return `${data.getDate()}/${data.getMonth()+1}/${data.getFullYear()}`;
     },
   }
 }

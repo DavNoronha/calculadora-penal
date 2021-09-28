@@ -9,7 +9,6 @@
       elevation="12"
       shrink-on-scroll
       src="https://picsum.photos/1920/1080?random"
-      scroll-target="#scrolling-techniques-2"
     >
       <template v-slot:img="{ props }">
         <v-img
@@ -34,11 +33,10 @@
 </template>
 
 <script>
-export default {
-  computed: {
-    isMobile() {
-      return this.$vuetify.breakpoint.smAndDown;
-    }
-  }
-}
+import responsividade from '~/mixins/responsividade.js';
+
+import Vue from 'vue';
+Vue.mixin(responsividade)
+
+export default {}
 </script>
