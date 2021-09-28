@@ -1,29 +1,34 @@
 <template>
-  <v-col :cols="isMobile ? 12 : 5">
+  <v-col :cols="mobile ? 12 : 5">
     <v-card height="100%" class="pa-3">
       <v-card-title class="d-flex justify-center">
         Insira os Dados
       </v-card-title>
 
       <v-row align="center" class="d-flex flex-column">
-        <v-col :cols="isMobile ? 10 : 8">
+        <v-col :cols="mobile ? 10 : 8">
+          <p class="text-center">
+            Data-base
+          </p>
           <v-text-field
             v-model="dataBase"
-            label="Data Base"
-            type="date"
+            v-mask="'##/##/####'"
+            :error="verificaData.invalida"
+            :error-messages="verificaData.text"
             outlined
+            label="Data-Base"
+            type="tel"
           />
         </v-col>
 
-        <v-col :cols="isMobile ? 10 : 8">
+        <v-col :cols="mobile ? 10 : 8">
           <p class="text-center">
             Tempo de pena
           </p>
-          <v-row class="">
+          <v-row>
             <v-col
               v-for="(item, idx) in itensPena"
               :key="idx"
-              class=""
             >
               <v-text-field
                 v-model="item.valor"
@@ -35,20 +40,24 @@
             </v-col>
           </v-row>
         </v-col>
-      </v-row>
 
-      <v-card
-        :color="backgroundCard[1]"
-        class="mt-8"
-      >
-        <v-card-text :class="['black--text', isMobile ? 'text-subtitle-1' : 'text-h5']">
-          <span>
-            Este site é uma ferramenta para o advogado moderno, idealizado pela Dra. Cínthia Passos.
-            Aproveite! Qualquer dúvida ou sugestão, procure-me no Instagram:
-              <a href="https://www.instagram.com/david.noronha/">@david.noronha</a>
-          </span>
-        </v-card-text>
-      </v-card>
+        <v-col :cols="mobile ? 10 : 8">
+          <p class="text-center">
+            Dias de remição
+          </p>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="diasRemicao"
+                label="Dias remidos"
+                outlined
+                type="tel"
+                v-mask="'####'"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
     </v-card>
   </v-col>
 </template>
@@ -64,14 +73,18 @@ export default {
       type: Array,
       default: []
     },
-    isMobile: {
-      type: Boolean,
-      default: true
+    remicao: {
+      type: String,
+      default: null
+    },
+    verificaData: {
+      type: Object,
+      default: ()=>({})
     }
   },
   data() {
     return {
-      backgroundCard: ['#0277BD', '#80D8FF']
+      backgroundCard: ['#0277BD', '#80D8FF', '#6200EA']
     }
   },
   computed: {
@@ -89,6 +102,14 @@ export default {
       },
       set(value) {
         this.$emit('input', value);
+      }
+    },
+    diasRemicao: {
+      get() {
+        return this.remicao;
+      },
+      set(value) {
+        this.$emit('diasRemicao', value);
       }
     }
   }
